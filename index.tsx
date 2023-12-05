@@ -1,7 +1,13 @@
 const React = (() => {
+  let isFirstElement = true;
   const createElement = (tag, props, ...children) => {
     if (typeof tag === "function") {
       try {
+        if (isFirstElement) {
+          isFirstElement = false;
+          baseComponent.tag = tag;
+          baseComponent.props = props;
+        }
         return tag(props);
       } catch ({ promise, key }) {
         promise.then((data) => {
@@ -26,6 +32,10 @@ const React = (() => {
   };
 
   let baseContainer = null;
+  let baseComponent = {
+    tag: null,
+    props: null,
+  };
 
   const renderer = (reactElementOrElse, container) => {
     if (typeof reactElementOrElse !== "object") {
@@ -72,8 +82,8 @@ const React = (() => {
     }
     statesCursor = 0;
     rerendering = true;
-    baseContainer.innerHTML = "";
-    render(<App />, baseContainer);
+    baseContainer.firstChild?.remove();
+    render(baseComponent.tag?.(baseComponent.props), baseContainer);
     cleanup();
     rerendering = false;
     return;
