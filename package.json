@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "dev": "vite --port 8080"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.2",
+    "vite": "^5.0.2"
+  }
+}
